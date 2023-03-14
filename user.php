@@ -41,7 +41,7 @@ public function __construct(){
     return $result; 
  }
 }
-
+//creation fonction connect 
  public function connect($login, $password){
     $donneesUser = $this->bdd->prepare("SELECT login,password FROM utilisateurs WHERE login= ? AND password = ?");
     $donneesUser->execute([$login,$password]);
@@ -55,11 +55,12 @@ public function __construct(){
      echo "Login ou password inconnu dans notre base de donnée";
     }    
  }
-
+//creation fonction disconnect
  public function disconnect(){
     echo "Vous avez été déconnecté";
     session_destroy();
  }
+ //creation fonction is connect
  public function isConnect(){
     if(isset($_SESSION['login'])){
         echo "utilisateur isConnected<br>";

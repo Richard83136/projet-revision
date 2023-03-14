@@ -27,7 +27,7 @@ $user->register($login,$email,$firstname,$lastname,$password);
 
     
 <body>      
-    <h1 >Inscription </h1>  
+    <h1 >Vous inscrire ?  </h1>  
                         <form  action="inscription.php" method="post">
                             <div>
                                 <label for="login">Choisissez votre Login:</label>
