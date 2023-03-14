@@ -43,12 +43,13 @@ public function __construct(){
 }
 //creation fonction connect 
  public function connect($login, $password){
-    $donneesUser = $this->bdd->prepare("SELECT login,password FROM utilisateurs WHERE login= ? AND password = ?");
+    $donneesUser = $this->bdd->prepare("SELECT * FROM utilisateurs WHERE login= ? AND password = ?");
     $donneesUser->execute([$login,$password]);
+    $result = $donneesUser->fetch(PDO::FETCH_ASSOC);
+    $_SESSION['user'] = $result;
 
     if($donneesUser->rowCount()>0){
-        $_SESSION['login'] = $login;
-        $_SESSION['password'] = $password;
+      $_SESSION['user'] = $result;
         echo 'Bienvenue sur votre connexion: '.$login."<br>";
        
     }else{

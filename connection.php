@@ -7,7 +7,7 @@ if(!empty($_POST['login']) && !empty($_POST['password'])){
 $login = $_POST['login'];
 $password = $_POST['password'];
 $user->connect($login,$password);
-$user->isConnect();
+// $user->isConnect();
     
 }
 ?>
@@ -38,6 +38,7 @@ $user->isConnect();
     
                         </form>
                     </div>
+                    <button><a href="article.php">Créer un article</a>  </button>
 
 </body>          
 </html>
