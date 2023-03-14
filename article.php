@@ -3,14 +3,15 @@ session_start();
 include('bddconnect.php');
 include('user.php');
 
-$article = isset($_POST['article']);
-$id_utilisateur = $_SESSION['user']['id'];
+
 // var_dump($_SESSION);
 
-    if(isset($_POST['submit'])){
+    if(isset($_POST['submit'])){ 
+    $article = $_POST['article'];
+    $id_utilisateur = $_SESSION['user']['id'];
     $nouvelArticle = $bdd->prepare("INSERT INTO articles (article,id_utilisateur) VALUE (?,?)");
     $nouvelArticle->execute([$article,$id_utilisateur]);
-    
+   
      }
 if(isset ($_SESSION['user'])){?>
     <!DOCTYPE html>
