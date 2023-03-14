@@ -94,7 +94,7 @@ $user = new User();
 
 //Seconnecter à la bdd
 // $user->connect("ric","123");
-// $user->isConnect();
+//$user->isConnect();
 
 //deconnection
 //$user->disconnect();
