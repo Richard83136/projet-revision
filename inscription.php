@@ -54,6 +54,7 @@ $user->register($login,$email,$firstname,$lastname,$password);
                             
                             
                             <button type="submit">Submit</button>
+                            <button ><a href="connection.php">Se connecter</a></button>
     
                         </form>
                     </div>

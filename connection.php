@@ -39,6 +39,7 @@ $user->connect($login,$password);
                         </form>
                     </div>
                     <button><a href="article.php">Créer un article</a>  </button>
+                    <button><a href="inscription.php">S'inscrire ?</a>  </button>
 
 </body>          
 </html>
