@@ -7,7 +7,5 @@ $user = new User();
  $user->disconnect();
  
  
- 
+ header("location:connection.php");
  ?>
- <button><a href="connection.php">se Connecter</a>  </button>
-                    <button><a href="deconnecter.php">Déconnecter</a>  </button>

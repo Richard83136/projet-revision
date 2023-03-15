@@ -21,7 +21,7 @@ public function __construct(){
 
     // gestion des erreurs de PDO sur Exception
     $this->bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Votre connexion à la base de donnée est bonne<br>";
+    
     }catch(PDOException $e){
         echo "Echec : " .$e->getMessage();
         exit;
@@ -51,7 +51,7 @@ public function __construct(){
     if($donneesUser->rowCount()>0){
       $_SESSION['user'] = $result;
         echo 'Bienvenue sur votre connexion: '.$login."<br>";
-       
+       header("location:article.php");
     }else{
      echo "Login ou password inconnu dans notre base de donnée";
     }    
@@ -70,6 +70,21 @@ public function __construct(){
         return false;
     }
  }
+ public function update($login,$password,$email,$firstname,$lastname){
+   $updateUser = $this->bdd->prepare("UPDATE utilisateurs SET login =?, password =?, email =?, firstname =?, lastname =? WHERE login =?");
+   $updateUser->execute([$login,$password,$email,$firstname,$lastname,$_SESSION['user']['login']]);
+   $_SESSION['user']['login'] = $_POST['login'];
+   $_SESSION['user']['password'] = $_POST['password'];
+   $_SESSION['user']['email'] = $_POST['email'];
+   $_SESSION['user']['firstname'] = $_POST['firstname'];
+   $_SESSION['user']['lastname'] = $_POST['lastname'];
+   if(isset($_SESSION['login'])){
+
+       echo "Les modifications demandées ont bien été enregistrées";
+   }else{
+       echo "Aucun utilisateur connecté pour modifier les renseignements";
+   }
+}
 
 
  public function getLogin(){
@@ -99,15 +114,6 @@ $user = new User();
 
 //deconnection
 //$user->disconnect();
-
-
-
-
-
-
-
-
-
 
         
 ?>

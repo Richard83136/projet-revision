@@ -34,9 +34,10 @@ if(isset ($_SESSION['user'])){?>
                 </div><br>
                 <button type="submit" name="submit" >Envoyer</button>
                 <div>
-                    <button><a href="connection.php">se Connecter</a>  </button>
+               
                     <button><a href="deconnecter.php">Déconnecter</a>  </button>
                     <button><a href="articles.php">Voir les articles</a>  </button>
+                    <button><a href="profil.php">Modifier mon profil</a>  </button>
                     
                 </div>
         </form>
