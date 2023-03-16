@@ -11,7 +11,7 @@ $firstname = $_POST['firstname'];
 $lastname = $_POST['lastname'];
 
 
-$user->register($login,$email,$firstname,$lastname,$password);
+$user->register($login,$email,$firstname,$lastname,$password,$bdd);
 }
 
 

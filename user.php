@@ -1,4 +1,5 @@
 <?php
+
 class User {
     public $login;
     public $password;
@@ -7,31 +8,10 @@ class User {
     public $lastname;
     public $bdd;
 
-    //création du constructeur
-public function __construct(){
-    // pour la connexion à la base de donnée
-    $servername = 'localhost';
-    $dbname = 'révisions';
-    $username = 'root';
-    $password = '';
-
-    // on essaie la connexion
-    try{
-        $this->bdd = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8",$username,$password);
-
-    // gestion des erreurs de PDO sur Exception
-    $this->bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Votre connexion à la base de donnée est bonne<br>";
-    }catch(PDOException $e){
-        echo "Echec : " .$e->getMessage();
-        exit;
-    
-}
-    
-} // creation de la fonction d'inscription (enregistrement)
- public function register($login,$email,$firstname,$lastname,$password){
+ // creation de la fonction d'inscription (enregistrement)
+ public function register($login,$email,$firstname,$lastname,$password,$bdd){
    $login = $_POST['login'];
-   $nouvelUser = $this->bdd->prepare("SELECT * FROM utilisateurs WHERE login = ?");
+   $nouvelUser = $bdd->prepare("SELECT * FROM utilisateurs WHERE login = ?");
    $nouvelUser->execute([$login]);
    $result = $nouvelUser->fetchAll();
     if(!empty ($login) && !empty($email) && !empty($password) && !empty($firstname) && !empty($lastname) && $_POST['password'] === $_POST['confirm_password'] ){
@@ -40,10 +20,10 @@ public function __construct(){
 
    }else{
 
-    $nouvelUser = $this->bdd->prepare("INSERT INTO utilisateurs (login,  email, firstname, lastname,password) VALUES (?,?,?,?,?)");
+    $nouvelUser = $bdd->prepare("INSERT INTO utilisateurs (login,  email, firstname, lastname,password) VALUES (?,?,?,?,?)");
     $nouvelUser->execute([$login,$email,$firstname,$lastname,$password]);
     $_SESSION['login'] = $login;
-    $donneesUser = $this->bdd->prepare("SELECT * FROM utilisateurs WHERE login= ?");
+    $donneesUser = $bdd->prepare("SELECT * FROM utilisateurs WHERE login= ?");
     $donneesUser->execute([$_SESSION['login']]);
     $result = $donneesUser->fetchAll(PDO::FETCH_ASSOC);
     echo "Votre inscription s'est correctement déroulée<br>";
@@ -54,8 +34,8 @@ public function __construct(){
 }
  }
 //creation fonction connect 
- public function connect($login, $password){
-    $donneesUser = $this->bdd->prepare("SELECT * FROM utilisateurs WHERE login= ? AND password = ?");
+ public function connect($login, $password,$bdd){
+    $donneesUser = $bdd->prepare("SELECT * FROM utilisateurs WHERE login= ? AND password = ?");
     $donneesUser->execute([$login,$password]);
     $result = $donneesUser->fetch(PDO::FETCH_ASSOC);
     $_SESSION['user'] = $result;
@@ -82,8 +62,8 @@ public function __construct(){
         return false;
     }
  }
- public function update($login,$password,$email,$firstname,$lastname){
-   $updateUser = $this->bdd->prepare("UPDATE utilisateurs SET login =?, password =?, email =?, firstname =?, lastname =? WHERE login =?");
+ public function update($login,$password,$email,$firstname,$lastname,$bdd){
+   $updateUser = $bdd->prepare("UPDATE utilisateurs SET login =?, password =?, email =?, firstname =?, lastname =? WHERE login =?");
    $updateUser->execute([$login,$password,$email,$firstname,$lastname,$_SESSION['user']['login']]);
    $_SESSION['user']['login'] = $_POST['login'];
    $_SESSION['user']['password'] = $_POST['password'];

@@ -4,9 +4,9 @@ include('bddconnect.php');
 include('user.php');
 
 
-if(isset($_POST['submit'])){
+if(isset($_POST['modifier'])){
   $user = new User;
-  $user->update($_POST['login'],$_POST['password'],$_POST['email'],$_POST['firstname'],$_POST['lastname']);  
+  $user->update($_POST['login'],$_POST['password'],$_POST['email'],$_POST['firstname'],$_POST['lastname'],$bdd);  
 }
 // var_dump($_SESSION);
 ?>
@@ -43,7 +43,7 @@ if(isset($_POST['submit'])){
         <label for="confirm_password">Confirmer le mot de passe :</label>
         <input type="password"  name="confirm_password"><br>
 
-        <input type="submit" name="submit" value="Enregistrer">
+        <input type="submit" name="modifier" >
     </form>
     
     <?php 
