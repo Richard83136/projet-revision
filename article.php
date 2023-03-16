@@ -4,7 +4,7 @@ include('bddconnect.php');
 include('user.php');
 
 
-// var_dump($_SESSION);
+ var_dump($_SESSION);
 
     if(isset($_POST['submit'])){ 
     $article = $_POST['article'];
