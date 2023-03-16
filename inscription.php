@@ -10,6 +10,7 @@ $password = $_POST['password'];
 $firstname = $_POST['firstname']; 
 $lastname = $_POST['lastname'];
 
+
 $user->register($login,$email,$firstname,$lastname,$password);
 }
 
@@ -49,6 +50,10 @@ $user->register($login,$email,$firstname,$lastname,$password);
                             <div>
                                 <label for="password">Password:</label>
                                 <input type="password" name="password" class="form-control form-control-lg" id="password">
+                            </div>
+                            <div>
+                                <label for="confirm_password">confirm_password:</label>
+                                <input type="password" name="confirm_password" class="form-control form-control-lg" id="password">
                             </div>
                             
                                

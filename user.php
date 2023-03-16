@@ -30,7 +30,16 @@ public function __construct(){
     
 } // creation de la fonction d'inscription (enregistrement)
  public function register($login,$email,$firstname,$lastname,$password){
-    if(!empty ($login) && !empty($email) && !empty($password) && !empty($firstname) && !empty($lastname) ){
+   $login = $_POST['login'];
+   $nouvelUser = $this->bdd->prepare("SELECT * FROM utilisateurs WHERE login = ?");
+   $nouvelUser->execute([$login]);
+   $result = $nouvelUser->fetchAll();
+    if(!empty ($login) && !empty($email) && !empty($password) && !empty($firstname) && !empty($lastname) && $_POST['password'] === $_POST['confirm_password'] ){
+   if($nouvelUser->rowCount()>0){
+      echo "Login déja utilisé";
+
+   }else{
+
     $nouvelUser = $this->bdd->prepare("INSERT INTO utilisateurs (login,  email, firstname, lastname,password) VALUES (?,?,?,?,?)");
     $nouvelUser->execute([$login,$email,$firstname,$lastname,$password]);
     $_SESSION['login'] = $login;
@@ -40,7 +49,10 @@ public function __construct(){
     echo "Votre inscription s'est correctement déroulée<br>";
     return $result; 
  }
+}else{
+   echo "Tous les champs ne sont pas remplis ou mot de passe non identique avec le confir-password";
 }
+ }
 //creation fonction connect 
  public function connect($login, $password){
     $donneesUser = $this->bdd->prepare("SELECT * FROM utilisateurs WHERE login= ? AND password = ?");
