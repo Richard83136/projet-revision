@@ -6,10 +6,11 @@ $user = new User();
 if(!empty($_POST['login']) && !empty($_POST['password'])){
 $login = $_POST['login'];
 $password = $_POST['password'];
-$user->connect($login,$password,$bdd);
+$user->connect($login,$password);
 // $user->isConnect();
     
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

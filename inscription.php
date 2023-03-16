@@ -13,6 +13,7 @@ $lastname = $_POST['lastname'];
 $user->register($login,$email,$firstname,$lastname,$password);
 }
 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
