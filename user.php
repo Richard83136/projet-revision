@@ -1,8 +1,4 @@
 <?php
-include('bddconnect.php');
-
-
-
 class User {
     public $login;
     public $password;
@@ -12,61 +8,50 @@ class User {
     public $bdd;
 
     //création du constructeur
-public function __construct($login,$email,$firstname,$lastname,$password,$bdd){
-
-   $this->login = $login;
-   $this->password = $password;
-   $this->email = $email;
-   $this->firstname = $firstname;
-   $this->lastname = $lastname;
-   $this->bdd = $bdd;
-
+public function __construct(){
     // pour la connexion à la base de donnée
-    
+    $servername = 'localhost';
+    $dbname = 'révisions';
+    $username = 'root';
+    $password = '';
 
     // on essaie la connexion
-   //  try{
-   //      $bdd = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8",$username,$password);
+    try{
+        $this->bdd = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8",$username,$password);
 
-   //  // gestion des erreurs de PDO sur Exception
-   //  $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // gestion des erreurs de PDO sur Exception
+    $this->bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Votre connexion à la base de donnée est bonne<br>";
+    }catch(PDOException $e){
+        echo "Echec : " .$e->getMessage();
+        exit;
     
-   //  }catch(PDOException $e){
-   //      echo "Echec : " .$e->getMessage();
-   //      exit;
-    
-// }
+}
     
 } // creation de la fonction d'inscription (enregistrement)
- public function register(){
+ public function register($login,$email,$firstname,$lastname,$password){
     if(!empty ($login) && !empty($email) && !empty($password) && !empty($firstname) && !empty($lastname) ){
-    $nouvelUser = $bdd->prepare("INSERT INTO utilisateurs (login,  email, firstname, lastname,password) VALUES (?,?,?,?,?)");
+    $nouvelUser = $this->bdd->prepare("INSERT INTO utilisateurs (login,  email, firstname, lastname,password) VALUES (?,?,?,?,?)");
     $nouvelUser->execute([$login,$email,$firstname,$lastname,$password]);
     $_SESSION['login'] = $login;
-    $donneesUser = $bdd->prepare("SELECT * FROM utilisateurs WHERE login= ?");
+    $donneesUser = $this->bdd->prepare("SELECT * FROM utilisateurs WHERE login= ?");
     $donneesUser->execute([$_SESSION['login']]);
     $result = $donneesUser->fetchAll(PDO::FETCH_ASSOC);
-    
-   
     echo "Votre inscription s'est correctement déroulée<br>";
     return $result; 
  }
 }
 //creation fonction connect 
- public function connect($login, $password, $bdd){
-    $donneesUser = $bdd->prepare("SELECT * FROM utilisateurs WHERE login= ? AND password = ?");
+ public function connect($login, $password){
+    $donneesUser = $this->bdd->prepare("SELECT * FROM utilisateurs WHERE login= ? AND password = ?");
     $donneesUser->execute([$login,$password]);
     $result = $donneesUser->fetch(PDO::FETCH_ASSOC);
     $_SESSION['user'] = $result;
-    if($donneesUser->rowCount()>0){
-      $_SESSION['user'] = serialize($this);
-      
-        echo 'Bienvenue sur votre connexion: '.$login."<br>";
-        var_dump($_SESSION['user']);
-        echo "</br>";
-        var_dump(unserialize($_SESSION['user']));
 
-      //  header("location:article.php");
+    if($donneesUser->rowCount()>0){
+      $_SESSION['user'] = $result;
+        echo 'Bienvenue sur votre connexion: '.$login."<br>";
+       
     }else{
      echo "Login ou password inconnu dans notre base de donnée";
     }    
@@ -85,8 +70,8 @@ public function __construct($login,$email,$firstname,$lastname,$password,$bdd){
         return false;
     }
  }
- public function update($login,$password,$email,$firstname,$lastname,$bdd){
-   $updateUser = $bdd->prepare("UPDATE utilisateurs SET login =?, password =?, email =?, firstname =?, lastname =? WHERE login =?");
+ public function update($login,$password,$email,$firstname,$lastname){
+   $updateUser = $this->bdd->prepare("UPDATE utilisateurs SET login =?, password =?, email =?, firstname =?, lastname =? WHERE login =?");
    $updateUser->execute([$login,$password,$email,$firstname,$lastname,$_SESSION['user']['login']]);
    $_SESSION['user']['login'] = $_POST['login'];
    $_SESSION['user']['password'] = $_POST['password'];
@@ -129,6 +114,3 @@ $user = new User();
 
 //deconnection
 //$user->disconnect();
-
-        
-?>
